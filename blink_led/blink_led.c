@@ -4,6 +4,7 @@
 
 int main() {
     stdio_init_all();
+    const uint LED_PIN = 1;
     if (cyw43_arch_init()) {
         printf("Wi-Fi init failed");
         return -1;
