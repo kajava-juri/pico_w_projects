@@ -1,0 +1,1 @@
+Just all the projects from a Freenove Starter Kit for Raspberry Pi Pico guide, but because it uses the Arduino IDE, I decided to use Visual Studio Code and pico-sdk with CMake. This requires to configure the .vscode settings to point to the sdk path.
