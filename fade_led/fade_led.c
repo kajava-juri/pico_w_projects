@@ -10,6 +10,14 @@ const uint LED_PIN = 15;
 //More complicated example: https://github.com/jondurrant/RPIPicoPWMExamples
 
 void on_pwm_wrap() {
+    // As I understand
+    // when the counter reaches the wrap (TOP), this interrupt handler gets called
+    // and changes the duty cycle by increasing/decreasing the level up to (max 16 bits)
+    // with squaring the number that is 8 bits
+    //
+    // The higher the duty cycle (level) the brighter the LED
+    // Also, the duty cycle changes slightly every time it wraps becose the
+    // fade variable changes every cycle
     static int fade = 0;
     static bool going_up = true;
     // Clear the interrupt flag that brought us here
@@ -43,9 +51,14 @@ int main(){
     irq_set_exclusive_handler(PWM_IRQ_WRAP, on_pwm_wrap);
     irq_set_enabled(PWM_IRQ_WRAP, true);
 
+    // I guess the default wrap value is max 16 bit value
+
+    //Does frequency matter other than controlling the fading time??
+
     pwm_config config = pwm_get_default_config();
     // Set divider, reduces counter clock to sysclock/this value
-    pwm_config_set_clkdiv(&config, 4.f);
+    // The higher the divider the slower the pulsating - the frequency decreases and the time to comple a cycle is slower (?but the duty cycle remains the same?)
+    pwm_config_set_clkdiv(&config, 8.f);
     // Load the configuration into our PWM slice, and set it running.
     pwm_init(slice_num, &config, true);
 
